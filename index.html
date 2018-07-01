@@ -12,11 +12,86 @@
 
   <script defer src="bundle.js"></script>
   <link rel="stylesheet" href="/styles/master.css">
-  
+
 </head>
 
 <body>
+  <div class="container">
 
+    <div class="jumbotron pb-1">
+      <h1 class="display-4 text-center">Let it out gurl!</h1>
+      <p class="lead text-center">Drag them to filth hunny. Write it down. Never forget.</p>
+      <hr class="my-4">
+
+      <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Read them</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Drag them</a>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+          <div class="row">
+
+            <div class="col-3 d-flex flex-column">
+              <nav id="navbar-example3" class="navbar navbar-light">
+                <nav class="nav nav-pills flex-column mx-auto">
+                  <a class="nav-link" href="#item-1">Item 1</a>
+                  <a class="nav-link" href="#item-2">Item 2</a>
+                  <a class="nav-link" href="#item-3">Item 3</a>
+                </nav>
+              </nav>
+            </div>
+
+            <div class="col-9 d-flex flex-column pl-5">
+              <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
+                <h4 id="item-1">Item 1</h4>
+                <p class="pb-5">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                  aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <h4 id="item-2">Item 2</h4>
+                <p class="pb-5">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                  aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <h4 id="item-3">Item 3</h4>
+                <p class="pb-5">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                  aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+          <form>
+            <div class="form-group row">
+              <label for="blogTitle" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="blogTitle" placeholder="Who is she?">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="blogContent" class="col-sm-2 col-form-label">Content</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="blogContent" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="form-group row justify-content-end">
+              <button type="submit" class="btn btn-primary py-2">Submit</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+  </div>
 </body>
 
 </html>
