@@ -12,9 +12,21 @@ function createBlog (title, content) {
     title: title,
     content: content
   }
-  model.createOne(body)
+  return model.createOne(body)
+}
+
+function updatePost (id, title, content) {
+  const body = {title, content}
+  return model.updateOne(id, body)
+}
+
+function deletePost(id) {
+  return model.deleteOne(id)
 }
 
 module.exports = {
-  refreshBlogs
+  refreshBlogs,
+  updatePost,
+  deletePost,
+  createBlog
 }

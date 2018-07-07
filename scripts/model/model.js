@@ -1,4 +1,4 @@
-let allBlogs
+let allBlogs = []
 let editBlog
 
 function getAll () {
@@ -17,26 +17,28 @@ function getOne (id) {
 }
 
 function createOne (body) {
-  axios.post(`https://tragically-eh-34409.herokuapp.com/posts`, JSON.stringify(body))
+  return axios.post(`https://tragically-eh-34409.herokuapp.com/posts`, body)
     .then(response => {
-      allBlogs.push(response.data)
+      return response
     })
 }
 
 function updateOne (id, body) {
-  axios.put(`https://tragically-eh-34409.herokuapp.com/posts/${id}`, body)
+  return axios.put(`https://tragically-eh-34409.herokuapp.com/posts/${id}`, body)
     .then(response => {
-      const localCopy = allBlogs.find(post => post.id === id)
-      localCopy.title = body.title
-      localCopy.content = body.content
+      // const localCopy = allBlogs.find(post => post.id === id)
+      // localCopy.title = body.title
+      // localCopy.content = body.content
+      return response
     })
 }
 
 function deleteOne (id) {
-  axios.delete(`https://tragically-eh-34409.herokuapp.com/posts${id}`)
+  return axios.delete(`https://tragically-eh-34409.herokuapp.com/posts/${id}`)
     .then(response => {
-      const localIndex = allBlogs.indexOf(response.data)
-      allBlogs.splice(index, 1)
+      // const localIndex = allBlogs.indexOf(response.data)
+      // allBlogs.splice(index, 1)
+      return response
     })
 }
 
