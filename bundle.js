@@ -1700,7 +1700,9 @@ function createBlog (title, content) {
 }
 
 function updatePost (id, title, content) {
-  const body = {title, content}
+  const body = {
+    title, content
+  }
   return model.updateOne(id, body)
 }
 
@@ -1723,21 +1725,10 @@ view.addSubmitListener()
 view.renderBlogs()
 
 },{"./controllers/controllers":7,"./view/view":10}],9:[function(require,module,exports){
-let allBlogs = []
-let editBlog
-
 function getAll () {
   return axios.get("https://tragically-eh-34409.herokuapp.com/posts")
     .then(response => {
-      allBlogs = response.data
-      return allBlogs
-    })
-}
-
-function getOne (id) {
-  axios.get(`https://tragically-eh-34409.herokuapp.com/posts/${id}`)
-    .then(response => {
-      editBlog = response.data
+      return response
     })
 }
 
@@ -1751,9 +1742,6 @@ function createOne (body) {
 function updateOne (id, body) {
   return axios.put(`https://tragically-eh-34409.herokuapp.com/posts/${id}`, body)
     .then(response => {
-      // const localCopy = allBlogs.find(post => post.id === id)
-      // localCopy.title = body.title
-      // localCopy.content = body.content
       return response
     })
 }
@@ -1761,17 +1749,12 @@ function updateOne (id, body) {
 function deleteOne (id) {
   return axios.delete(`https://tragically-eh-34409.herokuapp.com/posts/${id}`)
     .then(response => {
-      // const localIndex = allBlogs.indexOf(response.data)
-      // allBlogs.splice(index, 1)
       return response
     })
 }
 
 module.exports = {
-  allBlogs,
-  editBlog,
   getAll,
-  getOne,
   createOne,
   updateOne,
   deleteOne
@@ -1784,12 +1767,14 @@ const ctrl = require('../controllers/controllers')
 const blogList = document.querySelector('.blogList')
 const blogPen = document.querySelector('.blogPen')
 
+// Render Functions:
+
 function renderBlogs () {
   ctrl.refreshBlogs()
     .then(response => {
       blogList.innerHTML = ''
       blogPen.innerHTML = ''
-      const blogData = response.data
+      const blogData = response.data.data
       blogData.forEach((post, index) => {
         const listTemplate = `
         <a class="nav-link" href="#item-${index + 1}"><%= title %></a>
@@ -1804,69 +1789,10 @@ function renderBlogs () {
         `
         blogList.innerHTML += ejs.render(listTemplate, post)
         blogPen.innerHTML += ejs.render(postTemplate, post)
-        addEditButton()
-        addDeleteButton()
+        addEditListener()
+        addDeleteListener()
       })
     })
-
-}
-
-function addSubmitListener() {
-  document.querySelector('#submit').addEventListener('click', function(event) {
-    event.preventDefault()
-    const title = document.querySelector('#blogTitle').value
-    const content = document.querySelector('#blogContent').value
-    const errPara = document.querySelector('.errPara')
-    ctrl.createBlog(title, content)
-      .then(response => {
-        errPara.innerHTML = "Success"
-        setTimeout(() => {
-          errPara.style.opacity = 1
-          setTimeout(() => {
-            errPara.style.opacity = 0
-          }, 2000)
-        }, 500)
-        renderBlogs()
-      })
-      .catch(error => {
-        console.log(error)
-        errPara.innerHTML = "Not Quite"
-        setTimeout(() => {
-          errPara.style.opacity = 1
-          setTimeout(() => {
-            errPara.style.opacity = 0
-          }, 2000)
-        }, 500)
-      })
-      document.querySelector('form').reset()
-  })
-}
-
-function addDeleteButton () {
-  const deletes = Array.from(document.querySelectorAll('.delete'))
-  deletes.forEach(ele => ele.addEventListener('click', (event) => {
-    event.preventDefault()
-    const id = event.target.parentNode.classList[0]
-    ctrl.deletePost(id)
-      .then(response => renderBlogs())
-  }))
-}
-
-function addEditButton () {
-  const edits = Array.from(document.querySelectorAll('.edit'))
-  edits.forEach(ele => ele.addEventListener('click', (event) => {
-    event.preventDefault()
-    const blogGroup = event.target.parentNode
-    const id = event.target.parentNode.classList[0]
-    const blogTitle = blogGroup.querySelector('h4').textContent
-    const blogContent = blogGroup.querySelector('p').textContent
-    console.log(id)
-    renderUpdateForm(blogGroup, blogTitle, blogContent)
-
-    // document.querySelector('#submit').addEventListener('click', (event) => {
-    //   event.preventDefault()
-    // })
-  }))
 }
 
 function renderUpdateForm (blogGroup, title, content) {
@@ -1895,6 +1821,52 @@ function renderUpdateForm (blogGroup, title, content) {
   addUpdateListener(updateButton, blogGroup)
 }
 
+function removeForm(blogGroup) {
+  const form = blogGroup.querySelector('form')
+  blogGroup.removeChild(form)
+}
+
+// Event Listener Functions:
+
+function addSubmitListener() {
+  document.querySelector('#submit').addEventListener('click', function(event) {
+    event.preventDefault()
+    const title = document.querySelector('#blogTitle').value
+    const content = document.querySelector('#blogContent').value
+    ctrl.createBlog(title, content)
+      .then(response => {
+        successMsg()
+        renderBlogs()
+      })
+      .catch(error => {
+        failureMsg()
+      })
+      document.querySelector('form').reset()
+  })
+}
+
+function addDeleteListener () {
+  const deletes = Array.from(document.querySelectorAll('.delete'))
+  deletes.forEach(ele => ele.addEventListener('click', (event) => {
+    event.preventDefault()
+    const id = event.target.parentNode.classList[0]
+    ctrl.deletePost(id)
+      .then(response => renderBlogs())
+  }))
+}
+
+function addEditListener () {
+  const edits = Array.from(document.querySelectorAll('.edit'))
+  edits.forEach(ele => ele.addEventListener('click', (event) => {
+    event.preventDefault()
+    const blogGroup = event.target.parentNode
+    const id = event.target.parentNode.classList[0]
+    const blogTitle = blogGroup.querySelector('h4').textContent
+    const blogContent = blogGroup.querySelector('p').textContent
+    renderUpdateForm(blogGroup, blogTitle, blogContent)
+  }))
+}
+
 function addUpdateListener(button, blogGroup) {
   button.addEventListener('click', (event) => {
     event.preventDefault()
@@ -1907,9 +1879,28 @@ function addUpdateListener(button, blogGroup) {
   })
 }
 
-function removeForm(blogGroup) {
-  const form = blogGroup.querySelector('form')
-  blogGroup.removeChild(form)
+// Form Error Messages:
+
+function successMsg () {
+  const errPara = document.querySelector('.errPara')
+  errPara.innerHTML = "Success"
+  setTimeout(() => {
+    errPara.style.opacity = 1
+    setTimeout(() => {
+      errPara.style.opacity = 0
+    }, 2000)
+  }, 500)
+}
+
+function failureMsg () {
+  const errPara = document.querySelector('.errPara')
+  errPara.innerHTML = "Not Quite"
+  setTimeout(() => {
+    errPara.style.opacity = 1
+    setTimeout(() => {
+      errPara.style.opacity = 0
+    }, 2000)
+  }, 500)
 }
 
 module.exports = {

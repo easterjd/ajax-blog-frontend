@@ -16,7 +16,9 @@ function createBlog (title, content) {
 }
 
 function updatePost (id, title, content) {
-  const body = {title, content}
+  const body = {
+    title, content
+  }
   return model.updateOne(id, body)
 }
 
